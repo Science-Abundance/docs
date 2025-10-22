@@ -352,22 +352,4 @@ Science becomes not only open, but **verifiable**.
 
 ---
 
-## References
-
-1. Blair, W. et al. *Vigil: Schema-Driven Provenance for Computational Reproducibility*, Science Abundance Coalition (2025).
-2. Kelsey, J., Schneier, B. *The JSON Canonicalization Scheme (JCS)*, RFC 8785, IETF (2020).
-3. Ed25519 – *High-speed High-security Signatures*, Bernstein et al. (2012).
-4. FAIR Principles for Scientific Data Management, Wilkinson et al. *Scientific Data* (2016).
-
----
-
-## Contact
-
-**Science Abundance Coalition**
-📍 Toronto / San Francisco / London
-🌐 [vigil.dev](https://vigil.dev) · [cofactor.science](https://cofactor.science)
-📧 [contact@vigil.dev](mailto:contact@vigil.dev)
-
----
-
 **Vigil + Cofactor** — *Reproducibility made verifiable.*
