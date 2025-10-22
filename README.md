@@ -1,14 +1,15 @@
-# Vigil & Cofactor: Verifiable Computational Science
+# 🧬 **Vigil × Cofactor — Verifiable Computational Science**
 
-Vigil creates cryptographically signed receipts for every computation. Cofactor turns those receipts into a shared research platform with verifiable provenance, collaboration, and long-term preservation. Together they make computational results reproducible, auditable, and easy to trust.
+**Vigil** turns every computation into a cryptographically signed receipt.
+**Cofactor** transforms those receipts into a shared research network where results carry permanent, verifiable provenance.
+Together, they make computational work **reproducible, auditable, and effortlessly shareable** — the way GitHub did for code, Hugging Face did for models, and Benchling did for biology.
 
 ---
 
-## Why Reproducibility Breaks
+## ⚠️ Why Reproducibility Fails
 
-Most computational work still collapses under basic provenance checks: environments move on, datasets drift, and results arrive with no proof of origin.
-
-Visual snapshot:
+Most computational results collapse under basic provenance checks.
+Environments drift, datasets mutate, and “supplementary code” is rarely runnable months later.
 
 ```mermaid
 flowchart TD
@@ -27,139 +28,133 @@ flowchart TD
   D --> D2[Non-deterministic Outputs]
 ```
 
+The result: science without signatures — valuable but unverifiable.
+
 ---
 
-## Vigil in 60 Seconds
+## ⚙️ Vigil in 60 Seconds
 
-Vigil treats schemas as contracts and the resulting receipts as evidence. Every run captures:
-
-- **Who** initiated it and under which project.
-- **What** code, inputs, and parameters were used.
-- **Where/when** it executed and in which environment.
-- **How** outputs were produced and hashed.
+Vigil treats **schemas as contracts** and **receipts as evidence**.
+Every run captures exactly *who*, *what*, *where*, and *how* a computation occurred.
 
 Core CLI loop:
 
 ```
-vigil run       → capture command, inputs, outputs
+vigil run       → capture command, inputs, outputs, env
 vigil promote   → canonicalize JSON + sign (Ed25519)
-vigil verify    → deterministic validation of the receipt
+vigil verify    → deterministic re-validation
 vigil push      → upload to Cofactor
-vigil pull      → rehydrate anywhere
+vigil pull      → re-hydrate anywhere
 ```
-
-Workflow at a glance:
 
 ```mermaid
 flowchart LR
-  Run[vigil run]
-  Promote[vigil promote]
-  Verify[vigil verify]
-  Push[vigil push]
-  Pull[vigil pull]
-
-  Run --> Promote --> Verify --> Push --> Pull
+  Run[vigil run] --> Promote[vigil promote] --> Verify[vigil verify] --> Push[vigil push] --> Pull[vigil pull]
   Pull -. reuse inputs .-> Run
 ```
 
-Receipts travel offline, survive tooling changes, and can be re-verified decades later.
+Receipts are portable JSON proofs — lightweight enough for GitHub, durable enough for archives.
+They survive toolchains, can be re-verified decades later, and slot neatly into pipelines built with Cursor or Next.js-style automation.
 
 ---
 
-## Cofactor Platform
+## ☁️ Cofactor — The Research Network
 
-Cofactor operationalizes Vigil receipts into a shared research network.
+Cofactor operationalizes Vigil’s receipts into a **GitHub-grade platform for scientific computation**.
 
-- Unified workspace to browse, compare, and verify runs.
-- API + SDK surface for automation and integrations.
-- Storage backplane that keeps provenance synchronized with artifacts.
-- Team permissions, collaborative reviews, and AI-assisted summaries.
-
-Proof movement through Cofactor:
+* A shared workspace to **browse, compare, and verify** computational results.
+* **APIs + SDKs** for automating provenance capture and validation.
+* **Versioned storage** that keeps artifact hashes and metadata in sync.
+* **Team collaboration** with reviews, permissions, and AI-assisted summaries (à la Cursor).
 
 ```mermaid
 flowchart LR
-  Researchers[[Researchers]] --> CLI[Vigil CLI]
+  Researcher[[Researcher]] --> CLI[Vigil CLI]
   CLI --> Cofactor[Cofactor API]
-  Cofactor --> Workspace[Shared Workspace]
-  Workspace --> Review[Review & Collaboration]
-  Review --> Researchers
+  Cofactor --> Workspace[Shared Workspace & UI]
+  Workspace --> Review[Collaboration & Verification]
+  Review --> Researcher
 ```
+
+Think *Hugging Face × Benchling* for science:
+models, data, and experiments all tied to verifiable receipts.
 
 ---
 
-## Architecture at a Glance
+## 🧩 Architecture at a Glance
 
-The stack stays schema-driven end to end. JSON Schemas define every object, the API is generated from those schemas, and clients consume the same contracts.
+A fully schema-driven stack — like **Next.js** generating routes from code, Vigil generates APIs and SDKs from canonical schemas.
 
 ```mermaid
 flowchart TD
-  Collab[Collaboration Layer Cofactor Cloud] --> App[Application Layer Fastify API + Next.js]
-  App --> Storage[Storage Layer Postgres + S3]
-  Storage --> Proof[Proof Layer Schemas & Receipts]
-  Proof --> Compute[Compute Layer Kubernetes / Slurm]
+  Collab[Collaboration Layer — Cofactor Cloud] --> App[Application Layer — Fastify API + Next.js UI]
+  App --> Storage[Storage Layer — Postgres + S3]
+  Storage --> Proof[Proof Layer — Schemas + Receipts]
+  Proof --> Compute[Compute Layer — Kubernetes / Slurm / Local Core]
 ```
+
+* **Schemas →** JSON Schema Draft 2020-12 define Projects, Runs, Artifacts, Receipts.
+* **API →** Fastify + Prisma exposes those objects through an OpenAPI 3.1 contract.
+* **Clients →** Python + TypeScript SDKs (generated) keep CLI and UI in lockstep.
+* **Cofactor App →** Next.js 15 frontend renders the proof graph like GitHub renders commits.
 
 ---
 
-## Proof Lifecycle
+## 🔄 Proof Lifecycle
 
-From first command to archived evidence:
-
-| Stage | Tool | What happens |
-| ----- | ---- | ------------- |
-| **Run** | `vigil-core` | Capture command, inputs, outputs, environment |
-| **Promote** | `vigil-core` | Canonicalize JSON (JCS) and sign (Ed25519) |
-| **Verify** | `vigil-core` | Re-hash outputs and validate schema |
-| **Push** | `vigil-client` | Upload via OpenAPI for secondary validation |
-| **Persist** | `apps/api` | Store receipt + metadata in Postgres & S3 |
-| **View** | `apps/app` | Surface proofs in the workspace UI |
-| **Reproduce** | `vigil-client` | Pull receipts and artifacts anywhere |
+| Stage         | Tool           | Action                              |
+| ------------- | -------------- | ----------------------------------- |
+| **Run**       | `vigil-core`   | Capture code, data, env             |
+| **Promote**   | `vigil-core`   | Canonicalize + sign (JCS + Ed25519) |
+| **Verify**    | `vigil-core`   | Re-hash and validate schema         |
+| **Push**      | `vigil-client` | Upload via OpenAPI                  |
+| **Persist**   | `Cofactor API` | Validate → store in Postgres/S3     |
+| **View**      | `Cofactor App` | Explore proofs, lineage, metrics    |
+| **Reproduce** | `vigil-client` | Pull receipts → re-execute locally  |
 
 ```mermaid
 flowchart LR
-  Run[vigil run]
-  Promote[vigil promote]
-  Verify[vigil verify]
-  Push[vigil push]
-  API[Cofactor API]
-  Store[Postgres + S3]
-  UI[Cofactor UI]
-  Pull[vigil pull]
-
-  Run --> Promote --> Verify --> Push --> API --> Store --> UI
-  UI --> Pull --> Run
+  Run[vigil run] --> Promote[vigil promote] --> Verify[vigil verify] --> Push[vigil push]
+  Push --> API[Cofactor API] --> Store[Postgres + S3] --> UI[Cofactor UI]
+  UI --> Pull[vigil pull] --> Run
 ```
 
 ---
 
-## Integrity Guarantees
+## 🛡️ Integrity Guarantees
 
-- **Canonical JSON (JCS):** deterministic bytes before hashing or signing.
-- **SHA-256 digests:** stable identifiers for every artifact and receipt.
-- **Ed25519 signatures:** tamper-evident authorship and integrity.
-- **Schema validation:** prevents structural drift across services.
-- **Transparency hooks:** optional Merkle anchoring for third-party attestations.
-- **Local audit log:** `.vigil/audit.log` preserves every action.
+* **Canonical JSON (JCS):** deterministic bytes before hashing.
+* **SHA-256 digests:** immutable identifiers for artifacts and receipts.
+* **Ed25519 signatures:** tamper-evident authorship and proof.
+* **Schema validation:** prevents structural drift.
+* **Transparency hooks:** optional Merkle anchoring for third-party attestations.
+* **Local audit log:** `.vigil/audit.log` captures every action.
 
----
-
-## Roadmap
-
-- Policy engine for institution-level reproducibility rules.
-- Rich provenance graphs and dependency visualizations.
-- Chunked artifact support for multi-terabyte datasets.
-- Native SDKs in TypeScript, Go, and Rust.
-- Collaborative, verified notebooks running on Cofactor Cloud.
+The same rigor that Git brings to commits, applied to computational evidence.
 
 ---
 
-## Try the Loop
+## 🗺️ Roadmap
+
+* Institution-level **policy engine** for reproducibility enforcement.
+* **Graph provenance** + interactive DAG visualizations.
+* **Chunked artifact** support for multi-terabyte datasets.
+* **Multi-language SDKs:** TypeScript, Go, Rust.
+* **Collaborative notebooks** running on Cofactor Cloud.
+* **AI assistants** (Cursor-style) for receipt introspection and proof generation.
+
+---
+
+## 🧪 Try the Loop
 
 ```bash
 vigil run python train_model.py
 vigil promote
 vigil push
+vigil pull
+vigil verify
 ```
 
-Re-run `vigil pull` and `vigil verify` anywhere to prove the result.
+Re-run anywhere. Verify anytime.
+**Vigil × Cofactor** makes computation as verifiable as commits —
+a *GitHub for scientific truth* and a *Hugging Face for reproducible models.*
